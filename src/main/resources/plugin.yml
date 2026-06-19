@@ -1,0 +1,33 @@
+name: DensitySMP
+version: '${project.version}'
+main: com.densitysmp.density.DensityPlugin
+api-version: '1.21'
+description: A unique SMP plugin where players have a Density stat
+author: DensitySMP
+commands:
+  density:
+    description: View your density level
+    usage: /<command> [player]
+    aliases: [d, dens]
+  densitytop:
+    description: View the density leaderboard
+    usage: /<command>
+    aliases: [dtop, densleaderboard]
+  densityadmin:
+    description: Admin commands for Density SMP
+    usage: /<command> <set|reset|reload> [player] [amount]
+    permission: density.admin
+    aliases: [da, densadmin]
+  compress:
+    description: Compress your density (sacrifice health for density)
+    usage: /<command>
+  expand:
+    description: Expand your density (sacrifice density for speed)
+    usage: /<command>
+permissions:
+  density.admin:
+    description: Access to admin density commands
+    default: op
+  density.bypass:
+    description: Bypass density elimination
+    default: op

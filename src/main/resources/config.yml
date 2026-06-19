@@ -1,0 +1,296 @@
+# DensitySMP - Flow Combat System
+# Kill to steal density. Chain hits to build Flow for combat buffs.
+
+# ═══════════════════════════════════
+# DENSITY SYSTEM (permanent stat)
+# ═══════════════════════════════════
+
+starting-density: 10
+max-density: 50
+min-density: 0
+density-per-kill: 1
+
+# Density Tiers — permanent PvP advantages based on your density level
+tiers:
+  # Fragile (1-3): Glass cannon
+  fragile:
+    min: 1
+    max: 3
+    extra-hearts: -4
+    damage-bonus: 2.0
+    armor-toughness: 0.0
+    lifesteal: 0.0
+    abilities:
+      - "&c-4 Max Hearts"
+      - "&a+2 Attack Damage"
+      - "&eHigh risk, high reward"
+
+  # Lean (4-7): Nimble fighter
+  lean:
+    min: 4
+    max: 7
+    extra-hearts: -2
+    damage-bonus: 1.0
+    armor-toughness: 0.0
+    lifesteal: 0.05
+    abilities:
+      - "&c-2 Max Hearts"
+      - "&a+1 Attack Damage"
+      - "&a5% Lifesteal"
+
+  # Balanced (8-15): Default state
+  balanced:
+    min: 8
+    max: 15
+    extra-hearts: 0
+    damage-bonus: 0.0
+    armor-toughness: 0.0
+    lifesteal: 0.0
+    abilities:
+      - "&7No bonuses or penalties"
+
+  # Fortified (16-25): Tanky bruiser
+  fortified:
+    min: 16
+    max: 25
+    extra-hearts: 2
+    damage-bonus: 0.0
+    armor-toughness: 2.0
+    lifesteal: 0.10
+    abilities:
+      - "&a+2 Max Hearts"
+      - "&a+2 Armor Toughness"
+      - "&a10% Lifesteal"
+
+  # Titan (26-40): Walking fortress
+  titan:
+    min: 26
+    max: 40
+    extra-hearts: 6
+    damage-bonus: 0.0
+    armor-toughness: 4.0
+    lifesteal: 0.15
+    thorns: 0.15
+    abilities:
+      - "&a+6 Max Hearts"
+      - "&a+4 Armor Toughness"
+      - "&a15% Lifesteal"
+      - "&a15% Thorns"
+
+  # Colossus (41-50): Ultimate PvP tier
+  colossus:
+    min: 41
+    max: 50
+    extra-hearts: 10
+    damage-bonus: 1.0
+    armor-toughness: 6.0
+    lifesteal: 0.20
+    thorns: 0.25
+    auto-totem: true
+    auto-totem-cooldown: 300
+    abilities:
+      - "&a+10 Max Hearts"
+      - "&a+6 Armor Toughness"
+      - "&a20% Lifesteal"
+      - "&a25% Thorns"
+      - "&6Auto-Totem (5min CD)"
+      - "&a+1 Attack Damage"
+
+# ═══════════════════════════════════
+# FLOW SYSTEM (temporary combat buff)
+# ═══════════════════════════════════
+# Flow builds when you land hits and get kills.
+# Flow decays over time and drops when you take damage.
+# Higher flow = stacking PvP buffs.
+
+flow:
+  enabled: true
+  max-flow: 100
+
+  # Flow gained per action
+  gain:
+    melee-hit: 5
+    arrow-hit: 4
+    kill: 25
+    assist: 10
+
+  # Flow lost per event
+  loss:
+    take-damage: 15
+    death: 100
+    # Flow decay per second when not in combat
+    idle-decay-per-second: 2
+
+  # Time in seconds before idle decay starts
+  combat-timeout: 8
+
+  # Flow thresholds and their buffs (stacking)
+  thresholds:
+    # 20 Flow: Warmed Up
+    warmed-up:
+      flow-required: 20
+      name: "&eWarmed Up"
+      speed-boost: 0.05
+      damage-bonus: 0.5
+    # 40 Flow: In The Zone
+    in-the-zone:
+      flow-required: 40
+      name: "&6In The Zone"
+      speed-boost: 0.10
+      damage-bonus: 1.0
+      regen: true
+    # 60 Flow: Flowing
+    flowing:
+      flow-required: 60
+      name: "&cFlowing"
+      speed-boost: 0.15
+      damage-bonus: 1.5
+      regen: true
+      # Attacks disable enemy shields for extra time
+      shield-break-bonus: 40
+    # 80 Flow: Unstoppable
+    unstoppable:
+      flow-required: 80
+      name: "&4&lUnstoppable"
+      speed-boost: 0.20
+      damage-bonus: 2.0
+      regen: true
+      shield-break-bonus: 60
+      # Immune to knockback
+      no-knockback: true
+    # 100 Flow: Transcendent
+    transcendent:
+      flow-required: 100
+      name: "&5&lTranscendent"
+      speed-boost: 0.25
+      damage-bonus: 3.0
+      regen: true
+      shield-break-bonus: 80
+      no-knockback: true
+      # Gain Strength I
+      strength: true
+      # Attacks apply 1s Weakness to enemy
+      weaken-enemy: true
+
+# ═══════════════════════════════════
+# CUSTOM WEAPONS (crafted at altar)
+# ═══════════════════════════════════
+weapons:
+  density-blade:
+    name: "&5&lDensity Blade"
+    lore:
+      - "&7Damage scales with your density"
+      - "&7Bonus: &e+density/10 &7damage"
+    base-damage: 8
+    density-scaling: 0.1
+    min-density: 5
+    recipe:
+      base-item: NETHERITE_SWORD
+      density-cost: 4
+
+  void-axe:
+    name: "&8&lVoid Axe"
+    lore:
+      - "&7Steals density on hit"
+      - "&7Disables shields for 8s"
+    base-damage: 10
+    density-steal: 0.3
+    shield-disable-ticks: 160
+    min-density: 5
+    recipe:
+      base-item: NETHERITE_AXE
+      density-cost: 3
+
+  flow-scythe:
+    name: "&c&lFlow Scythe"
+    lore:
+      - "&7Each hit grants 2x Flow"
+      - "&7Sweeping Edge hits all nearby"
+    base-damage: 7
+    flow-multiplier: 2.0
+    sweep-radius: 3.0
+    sweep-damage: 0.4
+    min-density: 10
+    recipe:
+      base-item: NETHERITE_HOE
+      density-cost: 5
+
+  siphon-bow:
+    name: "&d&lSiphon Bow"
+    lore:
+      - "&7Arrows steal density"
+      - "&7Arrows apply Slowness II (2s)"
+    density-steal-per-arrow: 0.2
+    slowness-duration: 2
+    min-density: 8
+    recipe:
+      base-item: BOW
+      density-cost: 5
+
+  mass-shifter:
+    name: "&b&lMass Shifter"
+    lore:
+      - "&7Right-click player: Swap densities"
+      - "&7Right-click air: Combat Boost (8s)"
+    swap-cooldown: 60
+    boost-duration: 8
+    boost-density-cost: 1
+    boost-cooldown: 45
+    min-density: 0
+    recipe:
+      base-item: BLAZE_ROD
+      density-cost: 4
+
+# ═══════════════════════════════════
+# ALTAR
+# ═══════════════════════════════════
+altar:
+  enabled: true
+  # Build: 3x3 obsidian platform with lodestone on top
+  # Sneak + right-click lodestone to open crafting menu
+  particles: true
+
+# ═══════════════════════════════════
+# KILL STREAKS
+# ═══════════════════════════════════
+killstreak:
+  enabled: true
+  3-kills-bonus: 0.5
+  5-kills-bonus: 1.0
+  10-kills-bonus: 2.0
+  broadcast: true
+
+# ═══════════════════════════════════
+# ELIMINATION
+# ═══════════════════════════════════
+elimination:
+  ban-on-eliminate: false
+  ban-duration: 24
+  broadcast: true
+
+# ═══════════════════════════════════
+# COMPRESS / EXPAND
+# ═══════════════════════════════════
+compress-cooldown: 300
+expand-cooldown: 300
+compress-amount: 2
+expand-amount: 2
+
+# ═══════════════════════════════════
+# DISPLAY
+# ═══════════════════════════════════
+particles:
+  enabled: true
+  aura: true
+  kill-effect: true
+
+scoreboard:
+  enabled: true
+  title: "&5&lDENSITY SMP"
+
+action-bar:
+  enabled: true
+  # Shows flow meter in action bar during combat
+
+messages:
+  prefix: "&8[&5Density&8] &7"
