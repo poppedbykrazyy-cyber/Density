@@ -46,6 +46,15 @@ Flow drops from: taking damage (-15), death (reset to 0), idle decay (-2/s after
 
 Build a **3x3 obsidian platform** with a **lodestone on top**. Sneak + right-click to open the crafting menu. Weapons cost density to forge and require the base item in your inventory.
 
+## Item Restrictions
+
+Configured under `item-restrictions` in `config.yml`:
+
+- **Shields and Totems of Undying are banned** — they can't be crafted, totems never activate, and any that end up in a player's inventory (trades, chests, drops) are auto-deleted.
+- **Ender pearl limit: 16** — players can't pick up pearls past the limit, and excess pearls are dropped on the ground.
+
+The Colossus Auto-Totem perk still works — it doesn't use a real totem item.
+
 ## Commands
 
 | Command | Description |

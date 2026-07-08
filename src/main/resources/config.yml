@@ -277,6 +277,19 @@ compress-amount: 2
 expand-amount: 2
 
 # ═══════════════════════════════════
+# ITEM RESTRICTIONS
+# ═══════════════════════════════════
+item-restrictions:
+  enabled: true
+  # These items cannot be crafted and are auto-deleted from inventories
+  banned-items:
+    - SHIELD
+    - TOTEM_OF_UNDYING
+  # Max ender pearls a player can carry; excess is dropped on the ground
+  # Set to 0 to disable the limit
+  ender-pearl-limit: 16
+
+# ═══════════════════════════════════
 # DISPLAY
 # ═══════════════════════════════════
 particles:

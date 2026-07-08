@@ -6,6 +6,7 @@ import com.densitysmp.density.commands.DensityCommand;
 import com.densitysmp.density.commands.DensityTopCommand;
 import com.densitysmp.density.commands.ExpandCommand;
 import com.densitysmp.density.listeners.CombatListener;
+import com.densitysmp.density.listeners.ItemRestrictionListener;
 import com.densitysmp.density.listeners.MovementListener;
 import com.densitysmp.density.listeners.PlayerListener;
 import com.densitysmp.density.managers.DensityManager;
@@ -45,6 +46,7 @@ public class DensityPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new MovementListener(this), this);
         getServer().getPluginManager().registerEvents(new WeaponListener(this), this);
         getServer().getPluginManager().registerEvents(new AltarManager(this), this);
+        getServer().getPluginManager().registerEvents(new ItemRestrictionListener(this), this);
 
         getServer().getScheduler().runTaskTimer(this, () -> {
             getServer().getOnlinePlayers().forEach(player -> {
