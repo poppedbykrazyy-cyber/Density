@@ -1,0 +1,19 @@
+name: OrbitalStrike
+version: '${project.version}'
+main: com.densitysmp.orbitalstrike.OrbitalStrikePlugin
+api-version: '1.21.11'
+description: Orbital TNT strikes, stabs, summons and teleports fired from fishing rods
+authors: [MC_Clip, DensitySMP]
+commands:
+  ob:
+    description: OrbitalStrike commands
+    usage: /<command> help
+    permission: orbitalstrike.admin
+    aliases: [orbitalstrike]
+permissions:
+  orbitalstrike.admin:
+    description: Use /ob to fire strikes and give orbital rods
+    default: op
+  orbitalstrike.use:
+    description: Fire orbital rods by reeling them in
+    default: true
