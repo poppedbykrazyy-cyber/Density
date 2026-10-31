@@ -1,0 +1,1 @@
+{ "name": "midnight-purple", "version": "0.1.0", "description": "Black and purple theme for Claude's chat: messages, tool rows, spinner and a band above the prompt", "types": "./types/index.d.ts", "license": "MIT" }
