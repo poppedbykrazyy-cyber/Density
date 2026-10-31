@@ -1,0 +1,90 @@
+/* ==UserStyle==
+@name         Midnight Purple for Claude
+@namespace    density/midnight-purple
+@version      0.1.0
+@description  Black and purple theme for claude.ai (Claude chat)
+@license      MIT
+@preprocessor default
+==/UserStyle== */
+
+@-moz-document domain("claude.ai") {
+  /* claude.ai paints from these variables, each an HSL triplet used as
+     hsl(var(--name)). Overriding them recolors the whole app at once. */
+  html,
+  html[data-theme],
+  html[data-mode],
+  [data-theme][data-mode] {
+    color-scheme: dark !important;
+
+    /* backgrounds: near-black with a purple tint */
+    --bg-000: 268 32% 9% !important;   /* cards, input box, menus */
+    --bg-100: 270 40% 4% !important;   /* main page */
+    --bg-200: 270 38% 3% !important;   /* sidebar */
+    --bg-300: 270 36% 6% !important;   /* hovered rows */
+    --bg-400: 270 30% 2% !important;
+    --bg-500: 0 0% 0% !important;
+
+    /* text: lavender whites */
+    --text-000: 270 100% 98% !important;
+    --text-100: 270 60% 93% !important;
+    --text-200: 270 35% 80% !important;
+    --text-300: 270 22% 66% !important;
+    --text-400: 270 16% 54% !important;
+    --text-500: 270 12% 44% !important;
+
+    /* borders: violet (claude.ai applies its own transparency) */
+    --border-100: 265 80% 70% !important;
+    --border-200: 265 75% 65% !important;
+    --border-300: 265 70% 60% !important;
+    --border-400: 265 65% 55% !important;
+
+    /* accents: buttons, the send button, links, the Claude mark */
+    --accent-brand: 258 90% 66% !important;
+    --accent-main-000: 258 95% 74% !important;
+    --accent-main-100: 258 90% 66% !important;
+    --accent-main-200: 262 83% 58% !important;
+    --accent-main-900: 268 55% 14% !important;
+    --accent-secondary-000: 280 90% 76% !important;
+    --accent-secondary-100: 280 85% 68% !important;
+    --accent-secondary-200: 282 75% 58% !important;
+    --accent-secondary-900: 282 50% 14% !important;
+    --accent-pro-000: 285 90% 76% !important;
+    --accent-pro-100: 285 85% 68% !important;
+    --accent-pro-200: 285 75% 58% !important;
+    --accent-pro-900: 285 50% 14% !important;
+
+    --oncolor-100: 0 0% 100% !important;
+    --oncolor-200: 270 60% 95% !important;
+    --oncolor-300: 270 40% 88% !important;
+  }
+
+  html, body {
+    background-color: #07040d !important;
+  }
+
+  ::selection {
+    background: #7c3aed !important;
+    color: #fff !important;
+  }
+
+  /* scrollbars */
+  * {
+    scrollbar-color: #5b21b6 #07040d;
+  }
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: #07040d; }
+  ::-webkit-scrollbar-thumb { background: #4c1d95; border-radius: 8px; border: 2px solid #07040d; }
+  ::-webkit-scrollbar-thumb:hover { background: #7c3aed; }
+
+  /* code blocks */
+  pre, code {
+    background-color: #0f0820 !important;
+  }
+
+  /* a soft purple glow on the message box while typing */
+  fieldset:focus-within,
+  [contenteditable="true"]:focus {
+    box-shadow: 0 0 0 1px #8b5cf6, 0 0 18px -4px #8b5cf680 !important;
+    outline: none !important;
+  }
+}
