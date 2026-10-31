@@ -79,6 +79,7 @@ drawing.
 capri/
 ├── main.js          Electron main: windows, perch/drag/snap, global cursor, Ollama proxy
 ├── preload.js       safe bridge exposed to the pages as window.capriDesktop
+├── tools/trace_head.py  regenerates her head's SVG paths from traced reference points
 └── renderer/
     ├── avatar.js    Capri herself (SVG + line boil + moods + idle actions + skins)
     ├── avatar.css   her colours and every animation

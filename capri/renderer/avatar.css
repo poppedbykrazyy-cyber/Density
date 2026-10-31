@@ -32,13 +32,13 @@
 .cp-lime { fill: #39ff7a; }
 .cp-visor { fill: url(#cpGreen); }
 .cp-notch { fill: none; stroke: #07040c; stroke-width: 1.6; stroke-linejoin: miter; }
-.cp-coat { fill: #f6f2ff; stroke: #9b5cff; stroke-width: 1.6; stroke-linejoin: miter; }
+.cp-coat { fill: #f7f4ff; stroke: #a15cff; stroke-width: 1.7; stroke-linejoin: miter; filter: drop-shadow(0 0 1.5px #c27bff); }
 .cp-hair-dark { fill: #c40f4a; opacity: .8; }
-.cp-hair-light { fill: #ffa3cc; opacity: .55; }
+.cp-hair-light { fill: #ffa8d0; opacity: .65; }
 .cp-speck { fill: #fff; opacity: .75; }
 .cp-star { fill: #fff; animation: cp-twinkle 1.8s steps(3) infinite; }
 .cp-star-big { animation-duration: 2.6s; }
-.cp-mouth-shut { fill: none; stroke: #fff; stroke-width: 1; stroke-linejoin: miter; }
+.cp-mouth-shut { fill: none; stroke: #e8e6f2; stroke-width: .75; stroke-linejoin: miter; }
 .cp-sleepy, .cp-happy { fill: none; stroke: #07040c; stroke-width: 2.6; stroke-linejoin: miter; }
 .cp-think path { fill: #39ff7a; }
 .cp-zzz text { fill: #39ff7a; font: 700 13px "Consolas", monospace; }
