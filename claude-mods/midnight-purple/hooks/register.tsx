@@ -11,12 +11,32 @@ const LAVENDER = '#e9d5ff'
 const isOn = atom({ plugin: 'midnight-purple', key: 'isOn' } as const, true)
 
 export const register: Register = on => {
+  // Diagnostics: which components each surface asked us to draw since load
+  const seen = new Map<string, number>()
+  on('ui.render', async ($, e, next) => {
+    const k = `${e.component}@${e.surface}`
+    seen.set(k, (seen.get(k) ?? 0) + 1)
+    return next(e)
+  })
+
   on('session.start', async ($, e, next) => {
     await $.command.register({
       name: 'purple',
       description: 'Toggle the black & purple theme on or off',
     })
+    await $.command.register({
+      name: 'purple-status',
+      description: 'Show which surfaces Midnight Purple is drawing on',
+    })
     return next(e)
+  })
+
+  on('command.run', { command: 'purple-status' }, async $ => {
+    const surfaces = await $.session.surfaces()
+    const rows = [...seen].map(([k, n]) => `  ${k}: ${n}`).join('\n') || '  (none yet)'
+    return {
+      text: `Theme: ${(await read($, isOn)) ? 'on' : 'off'}\nSurfaces attached: ${surfaces.join(', ') || '(none)'}\nDraw requests since load:\n${rows}`,
+    }
   })
 
   on('command.run', { command: 'purple' }, async $ => {
