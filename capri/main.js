@@ -3,12 +3,13 @@ const { app, BrowserWindow, ipcMain, screen, globalShortcut, Menu } = require('e
 const path = require('path');
 
 // Geometry shared with the renderer CSS:
-//  chat window 460x750, Capri (240x240) drawn at x=seatX (0-220, draggable), y=0;
-//  the panel's top edge is at y=180
-//  perch window 380x240, Capri drawn at x=140, y=0; the edge she sits on is y=180
-const CHAT = { w: 460, h: 750 };
-const PERCH = { w: 380, h: 240, capriX: 140, edgeY: 180 };
-let seatX = 196; // where she sits along the chat window's edge (renderer reports changes)
+//  chat window 520x790, Capri (360x360) drawn at x=seatX (0-160, draggable), y=0;
+//  the panel's top edge is at y=270
+//  perch window 420x360, Capri drawn at x=60, y=0; the edge she sits on is y=270
+const CHAT = { w: 520, h: 790 };
+const PERCH = { w: 420, h: 360, capriX: 60, edgeY: 270 };
+const SEAT_MAX = CHAT.w - 360;
+let seatX = 140; // where she sits along the chat window's edge (renderer reports changes)
 
 let chat = null;
 let perch = null;
@@ -122,7 +123,7 @@ app.on('window-all-closed', () => app.quit());
 
 // ---------------- IPC ----------------
 ipcMain.on('perch', doPerch);
-ipcMain.on('seat', (_e, x) => { if (Number.isFinite(x)) seatX = Math.min(220, Math.max(0, x)); });
+ipcMain.on('seat', (_e, x) => { if (Number.isFinite(x)) seatX = Math.min(SEAT_MAX, Math.max(0, x)); });
 ipcMain.on('unperch', doUnperch);
 ipcMain.on('minimize', () => chat && chat.minimize());
 ipcMain.on('quit', () => app.quit());

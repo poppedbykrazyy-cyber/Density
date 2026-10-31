@@ -1,8 +1,8 @@
 /* Capri: colors, moods and animations. See avatar.js for the drawing. */
 .capri {
   position: absolute;
-  width: 240px;
-  height: 240px;
+  width: 360px;
+  height: 360px;
   cursor: pointer;
   user-select: none;
   -webkit-user-select: none;
@@ -101,7 +101,7 @@
 .capri.sleep .cp-star { animation-duration: 6s; }
 .capri.sleep .cp-upper { animation: cp-breathe 6s ease-in-out infinite; }
 .capri.sleep .capri-art { animation: none; opacity: .85; }
-.capri.sleep .cp-head { transform: rotate(-12deg) translateY(4px) !important; }
+.capri.sleep .cp-head { transform: rotate(-12deg) translateY(6px) !important; }
 
 /* ---------- one-shot actions (avatar.js adds .act-* for a moment) ---------- */
 .capri.act-glitch .capri-art { animation: cp-glitch .65s steps(1); }
@@ -132,8 +132,8 @@
 /* ---------- speech bubble ---------- */
 .capri-bubble {
   position: absolute;
-  right: 150px;
-  top: 12px;
+  right: 210px;
+  top: 44px;
   width: max-content;
   max-width: 170px;
   padding: 8px 11px;
@@ -149,7 +149,7 @@
   z-index: 2;
 }
 .capri-bubble[hidden] { display: none; }
-.capri.bubble-flip .capri-bubble { right: auto; left: 160px; clip-path: polygon(0 0, 100% 0, 100% 100%, 10px 100%, 0 70%); border-right: 1px solid #39ff7a; border-left: 3px solid #ff2a55; }
+.capri.bubble-flip .capri-bubble { right: auto; left: 272px; clip-path: polygon(0 0, 100% 0, 100% 100%, 10px 100%, 0 70%); border-right: 1px solid #39ff7a; border-left: 3px solid #ff2a55; }
 
 /* ---------- keyframes ---------- */
 @keyframes cp-breathe { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-1.4px) scaleY(1.008); } }

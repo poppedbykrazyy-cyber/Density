@@ -281,14 +281,14 @@
 
   // She sits near the window's top-right corner; drag her to scoot along the edge.
   const seatEl = $('capri');
-  const SEAT_MIN = 0, SEAT_MAX = 220; // her box's left edge, in px from the window's left
-  let seatX = 196;
+  const SEAT_MIN = 0, SEAT_MAX = 160; // her box's left edge, in px from the window's left
+  let seatX = 140;
   function setSeat(x) {
     seatX = Math.round(Math.min(SEAT_MAX, Math.max(SEAT_MIN, x)));
     seatEl.style.left = seatX + 'px';
-    seatEl.classList.toggle('bubble-flip', seatX < 106); // keep her speech bubble on-screen
+    seatEl.classList.toggle('bubble-flip', seatX < 50); // keep her speech bubble on-screen
   }
-  setSeat(+(localStorage.getItem('capri.seatX') || 196));
+  setSeat(+(localStorage.getItem('capri.seatX') || 140));
   if (bridge) bridge.seat(seatX);
   let scoot = null;
   seatEl.addEventListener('pointerdown', (e) => {

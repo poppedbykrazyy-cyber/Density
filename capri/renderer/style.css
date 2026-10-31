@@ -36,17 +36,17 @@ html.electron body { background: transparent; place-items: start; }
 
 .stage {
   position: relative;
-  width: 460px;   /* 440px panel + room for her mane to spill past the right edge */
-  height: 750px;
+  width: 520px;   /* 440px panel + room for her to sit near the right corner */
+  height: 790px;
 }
 
-/* Capri perches on the right of the titlebar; her claws (x 66-194 of 240) hook over it */
-#capri { left: 220px; top: 0; z-index: 5; }
+/* Capri (360x360, window edge at y=270) sits near the titlebar's right corner; drag to move */
+#capri { left: 140px; top: 0; z-index: 5; }
 
 /* ---------- panel with cyberpunk cut corners ---------- */
 .panel {
   position: absolute;
-  top: 180px; left: 0; width: 440px; bottom: 0;
+  top: 270px; left: 0; width: 440px; bottom: 0;
   padding: 1.5px;
   background: linear-gradient(135deg, var(--green), var(--hot) 45%, var(--violet));
   clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% 100%, var(--cut) 100%, 0 calc(100% - var(--cut)));

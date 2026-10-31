@@ -103,7 +103,7 @@
   // ---------------- renderer ----------------
   const hex = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
 
-  // Draws the current clip into `canvas` (240x240: art box with the window edge at y=180),
+  // Draws the current clip into `canvas` (square art box; the window edge is at 3/4 height),
   // removing the background colour if asked.
   async function createRenderer(canvas, skin) {
     const ctx = canvas.getContext('2d', { willReadFrequently: true });
@@ -112,6 +112,7 @@
     let clip = 'idle', raf = 0, last = 0, autoKey = null;
     const t0 = performance.now();
     const key = skin.key || { mode: 'off' };
+    const S = canvas.width, BASE = Math.round(S * 0.815); // her clip's bottom sits a little over the edge (0.75)
 
     function draw(now) {
       raf = requestAnimationFrame(draw);
@@ -121,15 +122,15 @@
       const f = src.frame(now - t0);
       if (!f || !f.sw) return;
       // fit inside the box above (and slightly over) the edge, bottom-centred
-      const boxW = 240, boxH = 196 * (skin.scale || 1);
+      const boxW = S, boxH = BASE * (skin.scale || 1);
       const k = Math.min(boxW / f.sw, boxH / f.sh);
       const w = f.sw * k, h = f.sh * k;
-      ctx.clearRect(0, 0, 240, 240);
-      ctx.drawImage(f.img, f.sx, f.sy, f.sw, f.sh, (240 - w) / 2, 196 - h, w, h);
+      ctx.clearRect(0, 0, S, S);
+      ctx.drawImage(f.img, f.sx, f.sy, f.sw, f.sh, (S - w) / 2, BASE - h, w, h);
       if (key.mode === 'off') return;
 
-      const x0 = Math.max(0, Math.floor((240 - w) / 2)), y0 = Math.max(0, Math.floor(196 - h));
-      const iw = Math.min(240 - x0, Math.ceil(w)), ih = Math.min(240 - y0, Math.ceil(h));
+      const x0 = Math.max(0, Math.floor((S - w) / 2)), y0 = Math.max(0, Math.floor(BASE - h));
+      const iw = Math.min(S - x0, Math.ceil(w)), ih = Math.min(S - y0, Math.ceil(h));
       if (iw <= 0 || ih <= 0) return;
       const img = ctx.getImageData(x0, y0, iw, ih);
       const d = img.data;
