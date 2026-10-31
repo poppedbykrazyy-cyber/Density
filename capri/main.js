@@ -3,17 +3,20 @@ const { app, BrowserWindow, ipcMain, screen, globalShortcut, Menu } = require('e
 const path = require('path');
 
 // Geometry shared with the renderer CSS:
-//  chat window 460x750, Capri (240x240) drawn at x=220, y=0, and the panel's top edge at y=180
+//  chat window 460x750, Capri (240x240) drawn at x=seatX (0-220, draggable), y=0;
+//  the panel's top edge is at y=180
 //  perch window 380x240, Capri drawn at x=140, y=0; the edge she sits on is y=180
-const CHAT = { w: 460, h: 750, capriX: 220 };
+const CHAT = { w: 460, h: 750 };
 const PERCH = { w: 380, h: 240, capriX: 140, edgeY: 180 };
-const OFFSET_X = CHAT.capriX - PERCH.capriX; // perch.x = chat.x + OFFSET_X
+let seatX = 196; // where she sits along the chat window's edge (renderer reports changes)
 
 let chat = null;
 let perch = null;
 let drag = null;
 
 if (!app.requestSingleInstanceLock()) app.quit();
+// let her speak replies even when the chat window is hidden behind perch mode
+app.commandLine.appendSwitch('autoplay-policy', 'no-user-gesture-required');
 
 function makeWindow(opts, file) {
   const win = new BrowserWindow({
@@ -28,6 +31,7 @@ function makeWindow(opts, file) {
       contextIsolation: true,
       nodeIntegration: false,
       sandbox: true,
+      backgroundThrottling: false,
     },
     ...opts,
   });
@@ -64,7 +68,7 @@ function clampToDisplay(x, y, w, h) {
 function doPerch() {
   if (!chat || !perch || perch.isVisible()) return;
   const [cx, cy] = chat.getPosition();
-  perch.setPosition(cx + OFFSET_X, cy);
+  perch.setPosition(cx + seatX - PERCH.capriX, cy);
   perch.showInactive();
   chat.hide();
   perch.webContents.send('perched');
@@ -74,7 +78,7 @@ function doUnperch() {
   if (!chat || !perch) return;
   if (perch.isVisible()) {
     const [px, py] = perch.getPosition();
-    const [x, y] = clampToDisplay(px - OFFSET_X, py, CHAT.w, CHAT.h);
+    const [x, y] = clampToDisplay(px + PERCH.capriX - seatX, py, CHAT.w, CHAT.h);
     chat.setPosition(x, y);
     perch.hide();
   }
@@ -118,6 +122,7 @@ app.on('window-all-closed', () => app.quit());
 
 // ---------------- IPC ----------------
 ipcMain.on('perch', doPerch);
+ipcMain.on('seat', (_e, x) => { if (Number.isFinite(x)) seatX = Math.min(220, Math.max(0, x)); });
 ipcMain.on('unperch', doUnperch);
 ipcMain.on('minimize', () => chat && chat.minimize());
 ipcMain.on('quit', () => app.quit());

@@ -107,6 +107,7 @@
       return;
     }
 
+    CapriVoice.stop();
     addMsg('user', text);
     history.push({ role: 'user', content: text });
     busy = true;
@@ -146,7 +147,11 @@
     saveHistory();
     if (bridge) bridge.say(reply.length > 140 ? reply.slice(0, 137) + '...' : reply);
 
-    setTimeout(() => mood('idle'), 600);
+    if (CapriVoice.cfg.enabled && CapriVoice.available) {
+      CapriVoice.speak(reply, { onstart: () => mood('talk'), onend: () => mood('idle') });
+    } else {
+      setTimeout(() => mood('idle'), 600);
+    }
     busy = false;
     sendBtn.disabled = false;
     input.focus();
@@ -169,7 +174,7 @@
   function autosize() { input.style.height = 'auto'; input.style.height = Math.min(110, input.scrollHeight) + 'px'; }
   input.addEventListener('input', autosize);
 
-  $('btn-settings').onclick = () => { fillSettings(); $('settings').hidden = !$('settings').hidden; };
+  $('btn-settings').onclick = () => { fillSettings(); fillVoice(); $('settings').hidden = !$('settings').hidden; };
   $('cfg-save').onclick = () => { readSettings(); saveCfg(); $('settings').hidden = true; checkLink(true); };
   $('cfg-test').onclick = () => { readSettings(); checkLink(true); };
   // custom skin: your own Capri GIF / PNG / WebM replaces the drawn avatar (shared with the perch window)
@@ -188,17 +193,92 @@
     reader.readAsDataURL(file);
   };
   $('cfg-skin-reset').onclick = () => { localStorage.removeItem('capri.skin'); capri.reloadSkin(); addMsg('sys', 'Back to the drawn Capri.'); };
+  // ---------------- voice settings ----------------
+  function fillVoice() {
+    const v = CapriVoice.cfg;
+    const sel = $('vc-voice');
+    const list = CapriVoice.voices();
+    sel.innerHTML = '<option value="">auto (bright English voice)</option>' +
+      list.map((x) => `<option value="${x.name.replace(/"/g, '&quot;')}">${x.name.replace(/</g, '&lt;')} — ${x.lang}</option>`).join('');
+    sel.value = list.some((x) => x.name === v.voice) ? v.voice : '';
+    $('vc-on').checked = v.enabled;
+    $('vc-chirps').checked = v.chirps;
+    $('vc-pitch').value = v.pitch;
+    $('vc-rate').value = v.rate;
+    $('vc-pitch-val').textContent = (+v.pitch).toFixed(2);
+    $('vc-rate-val').textContent = (+v.rate).toFixed(2);
+  }
+  const readVoice = () => CapriVoice.set({
+    enabled: $('vc-on').checked,
+    chirps: $('vc-chirps').checked,
+    voice: $('vc-voice').value,
+    pitch: +$('vc-pitch').value,
+    rate: +$('vc-rate').value,
+  });
+  for (const id of ['vc-on', 'vc-chirps', 'vc-voice', 'vc-pitch', 'vc-rate']) {
+    $(id).addEventListener('input', () => { readVoice(); fillVoice(); });
+  }
+  $('vc-test').onclick = () => {
+    readVoice();
+    CapriVoice.speak(`Hey ${cfg.name}. Capri online. Your desktop's mine now — try not to mind the glitches.`,
+      { onstart: () => mood('talk'), onend: () => mood('idle') });
+  };
+  $('vc-preset').onclick = () => { CapriVoice.set({ ...CapriVoice.PRESET, voice: '' }); fillVoice(); $('vc-test').click(); };
+  CapriVoice.onVoicesChanged(() => { if (!$('settings').hidden) fillVoice(); });
+  if (!CapriVoice.available) $('voice-box').classList.add('unavailable');
+
   $('btn-perch').onclick = () => bridge && bridge.perch();
   $('btn-min').onclick = () => bridge && bridge.minimize();
   $('btn-close').onclick = () => bridge && bridge.quit();
 
   // poke her
-  $('capri').addEventListener('click', () => {
+  function poke() {
     if (capri.mood === 'sleep') { capri.setMood('idle'); capri.say('Mm... five more minutes...'); return; }
     capri.setMood('happy');
     if (Math.random() < 0.35) capri.play('glitch');
-    capri.say(CAPRI_POKE_LINES[Math.floor(Math.random() * CAPRI_POKE_LINES.length)]);
+    const line = CAPRI_POKE_LINES[Math.floor(Math.random() * CAPRI_POKE_LINES.length)];
+    capri.say(line);
+    CapriVoice.speak(line);
     setTimeout(() => { if (capri.mood === 'happy') capri.setMood('idle'); }, 900);
+  }
+
+  // She sits near the window's top-right corner; drag her to scoot along the edge.
+  const seatEl = $('capri');
+  const SEAT_MIN = 0, SEAT_MAX = 220; // her box's left edge, in px from the window's left
+  let seatX = 196;
+  function setSeat(x) {
+    seatX = Math.round(Math.min(SEAT_MAX, Math.max(SEAT_MIN, x)));
+    seatEl.style.left = seatX + 'px';
+    seatEl.classList.toggle('bubble-flip', seatX < 106); // keep her speech bubble on-screen
+  }
+  setSeat(+(localStorage.getItem('capri.seatX') || 196));
+  if (bridge) bridge.seat(seatX);
+  let scoot = null;
+  seatEl.addEventListener('pointerdown', (e) => {
+    if (e.button !== 0) return;
+    scoot = { x: e.clientX, from: seatX, moved: false };
+    seatEl.setPointerCapture(e.pointerId);
+  });
+  seatEl.addEventListener('pointermove', (e) => {
+    if (!scoot) return;
+    const dx = e.clientX - scoot.x;
+    if (!scoot.moved && Math.abs(dx) > 4) {
+      scoot.moved = true;
+      seatEl.classList.add('dragging');
+      capri.wake();
+      capri.say(['Scooting over~', 'Hey, careful!', 'Wheee—', 'Fine, fine, I\'ll move.'][Math.floor(Math.random() * 4)], 1500);
+    }
+    if (scoot.moved) setSeat(scoot.from + dx);
+  });
+  seatEl.addEventListener('pointerup', () => {
+    if (!scoot) return;
+    const moved = scoot.moved;
+    scoot = null;
+    seatEl.classList.remove('dragging');
+    if (!moved) return poke();
+    localStorage.setItem('capri.seatX', seatX);
+    if (bridge) bridge.seat(seatX);
+    capri.play('kick');
   });
 
   // eyes follow the cursor — globally in Electron, inside the page in a browser

@@ -19,20 +19,27 @@
   animation: cp-flicker 7s infinite steps(1);
 }
 .capri-svg * { transform-box: fill-box; }
+/* only her body is grabbable: empty space, hair and effects let clicks through to what's behind */
+.capri, .capri-svg { pointer-events: none; }
+.cp-upper, .cp-leg { pointer-events: visiblePainted; }
+.cp-hair, .cp-hair * { pointer-events: none; }
+.capri-skin { pointer-events: auto; }
 
 /* palette */
 .cp-ink { fill: #07040c; stroke: #7b3dff; stroke-width: 1.2; stroke-linejoin: miter; }
 .cp-void { fill: #07040c; }
 .cp-red { fill: #ff2a55; }
 .cp-lime { fill: #39ff7a; }
-.cp-plate { fill: url(#cpGreen); stroke: #07040c; stroke-width: 1.4; stroke-linejoin: miter; }
+.cp-visor { fill: url(#cpGreen); }
+.cp-notch { fill: none; stroke: #07040c; stroke-width: 1.6; stroke-linejoin: miter; }
 .cp-coat { fill: #f6f2ff; stroke: #9b5cff; stroke-width: 1.6; stroke-linejoin: miter; }
 .cp-hair-dark { fill: #c40f4a; opacity: .8; }
 .cp-hair-light { fill: #ffa3cc; opacity: .55; }
+.cp-speck { fill: #fff; opacity: .75; }
 .cp-star { fill: #fff; animation: cp-twinkle 1.8s steps(3) infinite; }
 .cp-star-big { animation-duration: 2.6s; }
 .cp-mouth-shut { fill: none; stroke: #fff; stroke-width: 1; stroke-linejoin: miter; }
-.cp-sleepy, .cp-happy { fill: none; stroke: #07040c; stroke-width: 2.4; stroke-linejoin: miter; }
+.cp-sleepy, .cp-happy { fill: none; stroke: #07040c; stroke-width: 2.6; stroke-linejoin: miter; }
 .cp-think path { fill: #39ff7a; }
 .cp-zzz text { fill: #39ff7a; font: 700 13px "Consolas", monospace; }
 
@@ -45,10 +52,10 @@
 /* hair: the whole mane sways from the head while each strand flutters in the wind */
 .cp-hair { transform-origin: 100% 45%; animation: cp-hair 5s ease-in-out infinite; }
 .cp-strand { transform-origin: 100% 50%; animation: cp-flutter 1.9s ease-in-out infinite; }
-/* legs swing over the edge */
-.cp-leg { transform-origin: 50% 0%; }
-.cp-leg-l { animation: cp-swing 2.6s ease-in-out infinite; }
-.cp-leg-r { animation: cp-swing 2.6s ease-in-out infinite reverse; }
+/* crossed legs: the top foot bobs, the under leg barely sways */
+.cp-leg { transform-origin: 70% 0%; }
+.cp-leg-top { animation: cp-bobfoot 1.6s ease-in-out infinite; }
+.cp-leg-under { animation: cp-sway 3.2s ease-in-out infinite; }
 .cp-arm-l, .cp-arm-r { transform-origin: 50% 0%; }
 .cp-shard { transform-origin: center; animation: cp-drift 3.4s linear infinite; }
 .cp-led { animation: cp-led 1.6s steps(2) infinite; }
@@ -64,7 +71,7 @@
 .capri.talk .cp-mouth-shut { opacity: 0; }
 .capri.talk .cp-mouth-open { opacity: 1; animation: cp-talk .16s steps(2) infinite alternate; }
 .capri.talk .cp-upper { animation: cp-bob .32s steps(2) infinite; }
-.capri.talk .cp-leg-l, .capri.talk .cp-leg-r { animation-duration: 1.1s; }
+.capri.talk .cp-leg-top { animation-duration: .7s; }
 .capri.talk .cp-strand { animation-duration: .7s; }
 
 /* thinking: shards float, eyes roll up, slow head sway */
@@ -104,14 +111,13 @@
 .capri.act-glance .cp-pupils { animation: cp-glance 2s steps(1); }
 .capri.act-toss .cp-hair { animation: cp-toss 1.3s cubic-bezier(.3, 1.5, .5, 1); }
 .capri.act-toss .cp-head { animation: cp-tilt 1.3s cubic-bezier(.3, 1.6, .5, 1); }
-.capri.act-kick .cp-leg-l { animation: cp-kick .6s cubic-bezier(.3, 1.6, .5, 1) 2; }
-.capri.act-kick .cp-leg-r { animation: cp-kick .6s cubic-bezier(.3, 1.6, .5, 1) .3s 2; }
+.capri.act-kick .cp-leg-top { animation: cp-kick .6s cubic-bezier(.3, 1.6, .5, 1) 2; }
 .capri.act-burst .cp-hair { animation: cp-burst .7s cubic-bezier(.2, 1.8, .4, 1); }
 .capri.act-materialize .capri-art { animation: cp-materialize .9s steps(1); }
 
 /* being dragged around */
-.capri.dragging .cp-leg-l, .capri.dragging .cp-leg-r { animation: cp-flail .22s steps(2) infinite alternate; }
-.capri.dragging .cp-leg-r { animation-delay: .11s; }
+.capri.dragging .cp-leg-top, .capri.dragging .cp-leg-under { animation: cp-flail .22s steps(2) infinite alternate; }
+.capri.dragging .cp-leg-under { animation-delay: .11s; }
 .capri.dragging .cp-strand { animation-duration: .4s; }
 
 /* custom skin: same moods, applied to the whole image */
@@ -143,6 +149,7 @@
   z-index: 2;
 }
 .capri-bubble[hidden] { display: none; }
+.capri.bubble-flip .capri-bubble { right: auto; left: 160px; clip-path: polygon(0 0, 100% 0, 100% 100%, 10px 100%, 0 70%); border-right: 1px solid #39ff7a; border-left: 3px solid #ff2a55; }
 
 /* ---------- keyframes ---------- */
 @keyframes cp-breathe { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-1.4px) scaleY(1.008); } }
@@ -154,8 +161,9 @@
   25% { transform: rotate(-9deg) skewY(4deg) scale(1.05); }
   55% { transform: rotate(6deg) skewY(-3deg) scale(1.07); }
 }
-@keyframes cp-swing { 0%, 100% { transform: rotate(-9deg); } 50% { transform: rotate(11deg); } }
-@keyframes cp-kick { 0%, 100% { transform: none; } 45% { transform: rotate(-38deg) scaleY(.88); } }
+@keyframes cp-bobfoot { 0%, 100% { transform: rotate(-4deg); } 50% { transform: rotate(10deg); } }
+@keyframes cp-sway { 0%, 100% { transform: rotate(-1.5deg); } 50% { transform: rotate(2deg); } }
+@keyframes cp-kick { 0%, 100% { transform: none; } 45% { transform: rotate(32deg) scaleY(.9); } }
 @keyframes cp-flail { 0% { transform: rotate(-24deg); } 100% { transform: rotate(22deg); } }
 @keyframes cp-drift {
   0%   { transform: translate(0, 0) rotate(0); opacity: 0; }

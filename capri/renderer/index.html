@@ -53,6 +53,20 @@
           <label>Model<input id="cfg-model" placeholder="auto-detect"></label>
           <label>Your handle<input id="cfg-name" placeholder="choom"></label>
           <label class="row"><input type="checkbox" id="cfg-offline"> Offline mode (no LLM, built-in replies)</label>
+          <fieldset class="voice-box" id="voice-box">
+            <legend>// VOICE</legend>
+            <label class="row"><input type="checkbox" id="vc-on"> Capri speaks her replies</label>
+            <label>Voice<select id="vc-voice"></select></label>
+            <div class="sliders">
+              <label>Pitch <b id="vc-pitch-val"></b><input type="range" id="vc-pitch" min="0.5" max="2" step="0.05"></label>
+              <label>Speed <b id="vc-rate-val"></b><input type="range" id="vc-rate" min="0.6" max="1.8" step="0.02"></label>
+            </div>
+            <label class="row"><input type="checkbox" id="vc-chirps"> Glitchy data chirps while she talks</label>
+            <div class="settings-btns">
+              <button id="vc-test" type="button">TEST VOICE</button>
+              <button id="vc-preset" type="button">CAPRI PRESET</button>
+            </div>
+          </fieldset>
           <div class="skin-row">
             <span>Skin</span>
             <label class="file-btn">LOAD GIF / PNG / WEBM<input type="file" id="cfg-skin" accept="image/gif,image/png,image/webp,image/apng,video/webm,video/mp4" hidden></label>
@@ -72,6 +86,7 @@
 
   <script src="avatar.js"></script>
   <script src="brain.js"></script>
+  <script src="voice.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

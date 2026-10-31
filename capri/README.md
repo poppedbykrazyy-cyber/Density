@@ -1,10 +1,12 @@
 # CAPRI // desktop AI companion
 
 A fan-made desktop AI assistant themed on **Capri** from *Cyberpunk: Edgerunners 2*. She has a huge
-windswept hot-pink mane full of stars, tall black spikes, green mask plates around big blue eyes,
-a white zigzag grin, a white jacket with violet rims, and red circuit patches. She sits on top of
-her chat window with her legs dangling over the edge. Detach her and she sits on top of any window
-on your screen, follows your cursor with her eyes, and talks back.
+windswept, glittering red-pink mane, tall black blade spikes, and a green visor split by a black
+spike. Her blue eyes have white cores and sit in star-shaped black sockets. She has a tiny zigzag
+mouth that snaps into a white triangle grin, a white jacket with violet rims, and red circuit
+patches. She sits near the top-right corner of her chat window with her legs crossed. Detach her
+and she sits on top of any window on your screen, follows your cursor with her eyes, and talks
+back out loud.
 
 ![Capri animated](preview.gif)
 
@@ -38,19 +40,31 @@ handle in **⚙ settings**.
 | | |
 |---|---|
 | **⇱** or `Ctrl+Shift+Space` | **Perch mode**: hides the chat and leaves Capri on your desktop, always on top |
-| Drag her | Drop her on the edge of any window. Drop her near the bottom of the screen and she snaps onto the taskbar |
+| Drag her (chat window) | Slide her along the window's top edge. Her spot is remembered |
+| Drag her (perch mode) | Drop her on the edge of any window. Drop her near the bottom of the screen and she snaps onto the taskbar |
 | Click her | Opens the chat in perch mode. In the chat window it pokes her |
 | Right-click her | Menu: open chat / sit on taskbar / quit |
 | `/help` | Commands: `/clear`, `/perch`, `/sleep`, `/model <name>`, `/link` |
+| ⚙ → **Voice** | Turn her voice on or off, pick a voice, and set pitch, speed and data chirps. **CAPRI PRESET** resets it |
 | ⚙ → **Skin** | Load your own Capri GIF/PNG/WebM to replace the drawn version |
 
 ## How she's animated
 
 - **Line boil:** every shard flips between hand-jittered copies of itself at about 8 fps, like the show's limited animation.
-- **Always on:** each hair strand flutters in the wind, the stars in her hair twinkle, and purple and green glitch shards drift past. She also swings her legs, breathes, blinks (sometimes twice), flickers, and has RGB-split edges. Her eyes and head track your cursor anywhere on screen.
+- **Always on:** each hair strand flutters in the wind, the stars in her hair twinkle, and purple and green glitch shards drift past. Her crossed top foot bobs, and she breathes, blinks (sometimes twice), flickers, and has RGB-split edges. Her eyes and head track your cursor anywhere on screen.
 - **Moods:** *thinking* (shards float, eyes roll up, head sways), *talking* (the grin snaps open and shut, body bobs, legs kick faster, hair whips), *happy* (^^ eyes plus the big grin), *asleep* after 90 s idle (head droops, zzz, everything stills).
-- **Random idle actions:** hair tosses, leg kicks, glitch bursts, head tilts, leaning forward, spike shivers, and eye glances.
+- **Random idle actions:** hair tosses, foot kicks, glitch bursts, head tilts, leaning forward, spike shivers, and eye glances.
 - **Glitch-in** entrance when she appears, and flailing legs while you drag her.
+
+### Voice
+
+Capri reads her replies aloud with your system's built-in text-to-speech voices. Windows and macOS
+ship with several. The **CAPRI PRESET** picks a bright English voice, raises the pitch and speeds
+it up a little. It also layers glitchy "data chirps" on top, so she sounds like a digital entity.
+She keeps her talking animation going until she finishes speaking. Change the voice, pitch and speed
+in ⚙ → Voice.
+
+This is a voice styled after her, not a clone of the actress's real voice.
 
 ### Custom skin (exact 1:1 look)
 
@@ -69,6 +83,7 @@ capri/
     ├── avatar.js    Capri herself (SVG + line boil + moods + idle actions + skins)
     ├── avatar.css   her colours and every animation
     ├── index.html   chat window   (+ style.css, app.js)
+    ├── voice.js     text-to-speech voice + data chirps
     ├── perch.html   perched-only window (+ perch.js)
     └── brain.js     persona prompt, Ollama streaming, offline replies
 ```
@@ -84,4 +99,5 @@ Then open <http://localhost:5173>.
 ## Notes
 
 - Capri can't detect where other apps' windows are. You drag her onto an edge and she stays there, always on top.
+- On Linux, voices need `speech-dispatcher` (e.g. `sudo apt install speech-dispatcher espeak-ng`).
 - On Linux, clicks don't pass through the transparent parts of her windows (Electron doesn't support click-through forwarding there).

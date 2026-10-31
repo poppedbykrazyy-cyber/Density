@@ -2,8 +2,8 @@
  * sitting on a window edge with her legs dangling over it.
  *
  * Geometry: viewBox 0 0 240 240 drawn 1:1 in a 240x240 box. The window edge
- * she sits on is y = 180; her shins (y 187-237) and fingers dangle over the front
- * of it, and her glittering pink mane streams out to the left.
+ * she sits on is y = 180, legs crossed; her shins (y 187-237) and fingers dangle
+ * over the front of it, and her glittering mane streams out to the left.
  *
  * Animation layers:
  *  - "boil": every [data-boil] shape flips between jittered copies of itself at
@@ -20,52 +20,48 @@
 <svg class="capri-svg capri-art" viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Capri">
   <defs>
     <linearGradient id="cpHairFill" x1="1" y1=".2" x2="0" y2=".5">
-      <stop offset="0" stop-color="#ff2563"/><stop offset=".45" stop-color="#ff2f7e"/><stop offset="1" stop-color="#ff69ad"/>
+      <stop offset="0" stop-color="#ff1f4f"/><stop offset=".5" stop-color="#ff2a62"/><stop offset="1" stop-color="#ff5a98"/>
     </linearGradient>
     <linearGradient id="cpGreen" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#6dffa2"/><stop offset="1" stop-color="#1ff06a"/>
+      <stop offset="0" stop-color="#5cff96"/><stop offset="1" stop-color="#20ef6b"/>
     </linearGradient>
     <pattern id="cpScan" width="6" height="3" patternUnits="userSpaceOnUse">
-      <rect width="6" height="1" fill="#2b0a3d" opacity=".32"/>
+      <rect width="6" height="1" fill="#2b0a3d" opacity=".28"/>
     </pattern>
     <clipPath id="cpHairClip">
       <use href="#cpHA"/><use href="#cpHB"/><use href="#cpHC"/><use href="#cpHD"/><use href="#cpHE"/><use href="#cpHF"/>
     </clipPath>
   </defs>
 
-  <ellipse class="cp-glow" cx="150" cy="181" rx="64" ry="4"/>
+  <ellipse class="cp-glow" cx="148" cy="181" rx="66" ry="4"/>
 
-  <!-- shins dangling over the window edge, ankles crossed (they swing from the knee) -->
-  <g class="cp-leg cp-leg-l">
-    <path class="cp-ink" data-boil=".7" d="M132 187 L149 187 L151 213 L150 226 L132 237 L140 222 L137 206 Z"/>
-    <path d="M136 205 L149 204" stroke="#7b3dff" stroke-width="1.2"/>
-  </g>
-  <g class="cp-leg cp-leg-r">
-    <path class="cp-ink" data-boil=".7" d="M152 187 L170 187 L166 206 L164 222 L177 237 L156 229 L153 213 Z"/>
-    <path class="cp-red" data-boil=".6" d="M155 196 L168 197 L166 209 L155 208 Z"/>
+  <!-- under leg: shin hangs straight down from the knee -->
+  <g class="cp-leg cp-leg-under">
+    <path class="cp-ink" data-boil=".7" d="M135 187 L152 187 L153 210 L151 226 L137 236 L142 222 L139 208 Z"/>
+    <path class="cp-red" data-boil=".5" d="M139 199 L151 199 L151 210 L140 210 Z"/>
   </g>
 
   <g class="cp-upper">
-    <!-- the mane: long windswept hot-pink hair, glittering with stars, streaming left -->
+    <!-- the mane: long windswept glittering hair streaming out behind her -->
     <g class="cp-hair">
-      <path id="cpHF" class="cp-strand" style="animation-delay:-1.6s" data-boil="1.8" fill="url(#cpHairFill)" d="M182 74 L192 26 L164 34 L156 0 L136 30 L100 12 L124 56 L138 70 Z"/>
-      <path id="cpHD" class="cp-strand" style="animation-delay:-.9s" data-boil="1.6" fill="url(#cpHairFill)" d="M174 64 L198 38 L192 78 L210 98 L182 96 Z"/>
-      <path id="cpHE" class="cp-strand" style="animation-delay:-1.3s" data-boil="1.6" fill="url(#cpHairFill)" d="M170 92 L198 118 L188 148 L202 178 L168 160 Z"/>
-      <path id="cpHC" class="cp-strand" style="animation-delay:-.2s" data-boil="2" fill="url(#cpHairFill)" d="M152 108 L112 88 L40 112 L0 142 L58 126 L20 168 L92 134 L124 142 Z"/>
-      <path id="cpHB" class="cp-strand" style="animation-delay:-.6s" data-boil="2" fill="url(#cpHairFill)" d="M162 94 L132 50 L70 46 L0 50 L52 64 L2 86 L70 82 L18 112 L102 96 Z"/>
-      <path id="cpHA" class="cp-strand" style="animation-delay:-1.1s" data-boil="2" fill="url(#cpHairFill)" d="M172 66 L152 28 L104 20 L38 2 L84 28 L0 20 L58 42 L124 50 Z"/>
-      <path class="cp-hair-dark" data-boil="1.6" d="M152 56 L20 28 L142 64 Z M144 82 L8 70 L138 88 Z M132 106 L30 142 L128 112 Z M184 104 L196 148 L178 112 Z"/>
-      <path class="cp-hair-light" data-boil="1.4" d="M150 42 L60 18 L146 48 Z M142 70 L38 58 L140 74 Z M122 98 L48 120 L120 102 Z"/>
+      <path id="cpHF" class="cp-strand" style="animation-delay:-1.6s" data-boil="1.8" fill="url(#cpHairFill)" d="M188 70 L200 22 L172 30 L160 0 L140 24 L104 8 L124 52 L140 68 Z"/>
+      <path id="cpHD" class="cp-strand" style="animation-delay:-.9s" data-boil="1.6" fill="url(#cpHairFill)" d="M180 62 L210 34 L202 76 L226 98 L190 98 Z"/>
+      <path id="cpHE" class="cp-strand" style="animation-delay:-1.3s" data-boil="1.6" fill="url(#cpHairFill)" d="M176 94 L208 118 L196 148 L212 178 L174 160 Z"/>
+      <path id="cpHC" class="cp-strand" style="animation-delay:-.2s" data-boil="2" fill="url(#cpHairFill)" d="M152 110 L112 90 L40 112 L0 144 L58 128 L20 170 L92 136 L124 144 Z"/>
+      <path id="cpHB" class="cp-strand" style="animation-delay:-.6s" data-boil="2" fill="url(#cpHairFill)" d="M162 96 L132 50 L70 46 L0 50 L52 64 L2 88 L70 84 L18 114 L102 98 Z"/>
+      <path id="cpHA" class="cp-strand" style="animation-delay:-1.1s" data-boil="2" fill="url(#cpHairFill)" d="M172 66 L152 26 L104 18 L38 0 L84 26 L0 18 L58 40 L124 50 Z"/>
+      <path class="cp-hair-dark" data-boil="1.6" d="M152 56 L20 28 L142 64 Z M144 84 L8 72 L138 90 Z M132 108 L30 144 L128 114 Z M190 106 L202 148 L184 112 Z"/>
+      <path class="cp-hair-light" data-boil="1.4" d="M150 40 L60 16 L146 46 Z M142 72 L38 60 L140 76 Z M122 100 L48 122 L120 104 Z"/>
       <g class="cp-stars" clip-path="url(#cpHairClip)"></g>
       <rect x="0" y="0" width="240" height="190" fill="url(#cpScan)" clip-path="url(#cpHairClip)"/>
     </g>
 
-    <!-- arms: left with the big green glove, right with a green stripe; hands grip the ledge -->
+    <!-- arms: big green glove on the left, green stripe on the right; hands grip the ledge -->
     <g class="cp-arm-l">
-      <path class="cp-ink" data-boil=".7" d="M128 113 L137 119 L119 150 L108 146 Z"/>
-      <path class="cp-lime" data-boil=".8" d="M106 142 L122 148 L118 177 L99 179 L101 160 Z"/>
-      <path d="M108 150 L112 173" stroke="#07040c" stroke-width="1.6"/>
-      <path class="cp-ink" data-boil=".6" d="M98 176 L121 176 L119 185 L116 193 L113 185 L109 195 L106 185 L101 191 Z"/>
+      <path class="cp-ink" data-boil=".7" d="M128 113 L137 119 L112 150 L101 146 Z"/>
+      <path class="cp-lime" data-boil=".8" d="M99 142 L116 148 L110 177 L91 179 L94 160 Z"/>
+      <path d="M101 150 L104 173" stroke="#07040c" stroke-width="1.6"/>
+      <path class="cp-ink" data-boil=".6" d="M89 176 L112 176 L110 185 L107 193 L104 185 L100 195 L97 185 L92 191 Z"/>
     </g>
     <g class="cp-arm-r">
       <path class="cp-ink" data-boil=".7" d="M172 113 L163 119 L182 150 L193 146 Z"/>
@@ -74,75 +70,76 @@
       <path class="cp-ink" data-boil=".6" d="M181 176 L201 176 L201 186 L197 194 L195 185 L191 193 L189 185 L184 191 Z"/>
     </g>
 
-    <!-- torso: black bodysuit, red panels with black circuit notches -->
-    <path class="cp-ink" data-boil=".7" d="M134 111 L166 111 L173 130 L164 150 L171 180 L129 180 L136 150 L127 130 Z"/>
-    <path class="cp-red" data-boil=".7" d="M139 119 L165 117 L160 138 L145 134 Z"/>
-    <path d="M146 123 L152 123 L152 128 L157 128 M158 121 L158 131 L162 131" stroke="#07040c" stroke-width="1.4" fill="none"/>
-    <path class="cp-red" data-boil=".7" d="M133 158 L157 155 L151 177 L131 178 Z"/>
-    <path d="M138 163 L146 163 L146 170 M149 160 L149 167" stroke="#07040c" stroke-width="1.4" fill="none"/>
-    <path class="cp-lime" data-boil=".6" d="M156 145 L167 149 L158 160 Z"/>
+    <!-- torso: black bodysuit, red panels with black E-shaped circuit notches -->
+    <path class="cp-ink" data-boil=".7" d="M134 111 L166 111 L173 130 L164 150 L171 178 L129 178 L136 150 L127 130 Z"/>
+    <path class="cp-red" data-boil=".7" d="M139 119 L165 117 L160 139 L145 135 Z"/>
+    <path class="cp-notch" d="M147 122 L155 122 L155 133 L147 133 M151 127 L155 127 M158 121 L158 131 L162 131"/>
+    <path class="cp-red" data-boil=".7" d="M133 156 L158 153 L153 172 L131 174 Z"/>
+    <path class="cp-notch" d="M137 160 L145 160 L145 168 M149 158 L149 165 L153 165"/>
+    <path class="cp-lime" data-boil=".6" d="M156 143 L167 147 L158 158 Z"/>
     <circle class="cp-led" cx="140" cy="146" r="2.6" fill="#39ff7a"/>
     <!-- white angular jacket panels with violet rims -->
-    <path class="cp-coat" data-boil=".7" d="M130 113 L116 131 L120 167 L128 177 L126 141 L137 120 Z"/>
-    <path class="cp-coat" data-boil=".7" d="M170 113 L186 131 L182 165 L174 177 L176 141 L163 120 Z"/>
-    <path d="M121 140 L121 160" stroke="#39ff7a" stroke-width="2"/>
-    <!-- thighs resting on the ledge, knees at the edge -->
-    <path class="cp-ink" data-boil=".6" d="M133 164 L150 167 L150 190 L130 190 Z"/>
-    <path class="cp-lime" data-boil=".5" d="M133 166 L150 169 L150 180 L132 180 Z"/>
-    <path class="cp-ink" data-boil=".6" d="M151 167 L168 164 L172 190 L152 190 Z"/>
-    <path d="M131 185 L150 185 M152 185 L171 185" stroke="#7b3dff" stroke-width="1"/>
+    <path class="cp-coat" data-boil=".7" d="M130 113 L116 131 L120 165 L128 175 L126 141 L137 120 Z"/>
+    <path class="cp-coat" data-boil=".7" d="M170 113 L186 131 L182 163 L174 175 L176 141 L163 120 Z"/>
+    <path d="M121 138 L121 160" stroke="#39ff7a" stroke-width="2"/>
+    <!-- crossed legs: under thigh, then the top thigh crossing over to the left knee -->
+    <path class="cp-ink" data-boil=".6" d="M132 166 L151 168 L153 190 L133 191 Z"/>
+    <path class="cp-ink" data-boil=".6" d="M150 165 L173 165 L171 180 L142 193 L121 191 L123 178 Z"/>
+    <path class="cp-lime" data-boil=".5" d="M149 168 L169 168 L167 177 L141 188 L128 185 L131 179 Z"/>
     <!-- neck -->
-    <path class="cp-void" d="M146 102 L156 102 L155 114 L147 114 Z"/>
+    <path class="cp-void" d="M145 104 L157 104 L156 114 L146 114 Z"/>
 
-    <g class="cp-head">
-      <!-- tall black spikes -->
-      <path class="cp-ink cp-crown" data-boil="1.2" d="M126 84 L98 66 L126 74 L120 16 L140 66 L150 4 L158 64 L196 14 L174 70 L208 66 L180 84 Z"/>
-      <!-- black head + lower face -->
-      <path class="cp-void" data-boil=".5" d="M119 70 L185 64 L182 97 L168 113 L150 118 L133 112 L118 95 Z"/>
-      <!-- green mask plates around each eye -->
-      <path class="cp-plate" data-boil=".5" d="M122 72 L148 80 L148 104 L131 106 L121 92 Z"/>
-      <path class="cp-plate" data-boil=".5" d="M152 80 L182 68 L180 94 L168 106 L152 104 Z"/>
-      <!-- eyes: black ring, royal-blue iris, white core; little black ticks under them -->
+    <g class="cp-head"><g transform="rotate(-10 150 106)">
+      <!-- black head: tall blade spikes, cheek and jaw -->
+      <path class="cp-ink cp-crown" data-boil="1.1" d="M112 124 L100 104 L104 86 L86 58 L110 70 L112 26 L134 62 L148 4 L160 56 L200 16 L186 60 L214 56 L192 80 L194 100 L178 118 L150 127 L126 127 Z"/>
+      <!-- the green visor, split from the top by a black spike between the eyes -->
+      <path class="cp-visor" data-boil=".45" d="M108 78 L140 67 L146 98 L152 63 L188 58 L186 94 L117 106 Z"/>
+      <!-- star-shaped black eye sockets, like heavy eyeliner -->
+      <path class="cp-void" data-boil=".3" d="M127 76.5 L138 70 L136.5 81 L137.8 88 L134 95.5 L131 103 L122 96.5 L112 92 L117.5 83 L121 78 Z"/>
+      <path class="cp-void" data-boil=".3" d="M167 68.5 L175 71 L178.5 78 L187 80 L176.5 87.5 L168 91.5 L159 99 L156.5 86 L155.5 78 L154 63 L160 70.5 Z"/>
+      <!-- eyes: thin green ring, big royal-blue iris, white core -->
       <g class="cp-eyes">
-        <circle cx="136" cy="91" r="9.4" fill="#07040c"/>
-        <circle cx="166" cy="88" r="10.6" fill="#07040c"/>
-        <circle cx="136" cy="91" r="7.9" fill="none" stroke="#39ff7a" stroke-width="1"/>
-        <circle cx="166" cy="88" r="9" fill="none" stroke="#39ff7a" stroke-width="1"/>
+        <circle cx="127" cy="87" r="8.6" fill="#07040c" stroke="#39ff7a" stroke-width=".9"/>
+        <circle cx="167" cy="80" r="9.6" fill="#07040c" stroke="#39ff7a" stroke-width=".9"/>
         <g class="cp-pupils">
-          <circle cx="136" cy="91" r="6.6" fill="#1e5bff"/>
-          <circle cx="166" cy="88" r="7.6" fill="#1e5bff"/>
-          <circle cx="136" cy="91" r="2.8" fill="#fff"/>
-          <circle cx="166" cy="88" r="3.3" fill="#fff"/>
+          <circle cx="127" cy="87" r="6.4" fill="#2457ff"/>
+          <circle cx="167" cy="80" r="7.2" fill="#2457ff"/>
+          <circle cx="127" cy="87" r="2.6" fill="#fff"/>
+          <circle cx="167" cy="80" r="2.9" fill="#fff"/>
         </g>
-        <path d="M127 101 L125 106 M145 100 L147 104 M157 99 L155 104 M175 97 L178 101" stroke="#07040c" stroke-width="1.5"/>
       </g>
-      <path class="cp-sleepy" d="M128 92 L136 96 L144 92 M157 89 L166 93 L175 89"/>
-      <path class="cp-happy" d="M128 96 L136 86 L144 96 M157 93 L166 82 L175 93"/>
-      <!-- mouth: a thin white zigzag... -->
-      <path class="cp-mouth-shut" data-boil=".4" d="M139 110 L142 107 L145 111 L148 107 L151 111 L154 106 L157 110 L160 106 L163 109"/>
-      <!-- ...that opens into a big white triangular grin -->
+      <path class="cp-sleepy" d="M118 88 L127 92 L136 88 M157 81 L167 85 L177 81"/>
+      <path class="cp-happy" d="M118 92 L127 82 L136 92 M157 85 L167 74 L177 85"/>
+      <!-- mouth: a tiny thin white zigzag... -->
+      <path class="cp-mouth-shut" data-boil=".3" d="M127 115 L131 115 L134 112 L137 116 L140 112 L143 116 L146 113 L151 113"/>
+      <!-- ...that opens into a big white triangle grin with jagged teeth -->
       <g class="cp-mouth-open">
-        <path d="M136 106 L168 102 L151 120 Z" fill="#fff"/>
-        <path d="M139 107 L145 111 L150 106 L155 110 L161 105 L166 104" stroke="#07040c" stroke-width="1.1" fill="none"/>
+        <path d="M121 107 L127 112 L131 107 L136 113 L141 106 L147 111 L153 104 L170 101 L134 129 Z" fill="#fff"/>
       </g>
-    </g>
+    </g></g>
+  </g>
+
+  <!-- top leg: shin dangles from the crossed-over knee, foot bobbing -->
+  <g class="cp-leg cp-leg-top">
+    <path class="cp-ink" data-boil=".7" d="M121 187 L141 190 L132 210 L124 222 L104 229 L117 216 L119 203 Z"/>
+    <path d="M122 200 L134 203" stroke="#7b3dff" stroke-width="1.2"/>
   </g>
 
   <!-- floating glitch shards -->
   <g class="cp-shards">
     <path class="cp-shard" style="animation-delay:0s" d="M18 194 L30 184 L26 200 Z" fill="#a24dff"/>
-    <path class="cp-shard" style="animation-delay:-1.2s" d="M212 30 L226 22 L218 40 Z" fill="#a24dff"/>
+    <path class="cp-shard" style="animation-delay:-1.2s" d="M214 30 L228 22 L220 40 Z" fill="#a24dff"/>
     <path class="cp-shard" style="animation-delay:-2.1s" d="M222 136 L232 124 L230 142 Z" fill="#39ff7a"/>
     <path class="cp-shard" style="animation-delay:-.6s" d="M30 70 L44 62 L38 78 Z" fill="#a24dff"/>
-    <path class="cp-shard" style="animation-delay:-2.8s" d="M88 188 L98 180 L97 194 Z" fill="#39ff7a"/>
+    <path class="cp-shard" style="animation-delay:-2.8s" d="M76 192 L86 184 L85 198 Z" fill="#39ff7a"/>
     <path class="cp-shard" style="animation-delay:-1.7s" d="M206 196 L216 188 L214 202 Z" fill="#a24dff"/>
   </g>
 
   <!-- thought shards / zzz -->
   <g class="cp-think">
-    <path d="M190 52 L196 44 L195 56 Z"/><path d="M202 40 L211 30 L208 46 Z"/><path d="M216 26 L226 14 L223 32 Z"/>
+    <path d="M196 52 L202 44 L201 56 Z"/><path d="M207 40 L216 30 L213 46 Z"/><path d="M220 26 L230 14 L227 32 Z"/>
   </g>
-  <g class="cp-zzz"><text x="188" y="54">z</text><text x="200" y="40">z</text><text x="214" y="26">Z</text></g>
+  <g class="cp-zzz"><text x="194" y="54">z</text><text x="206" y="40">z</text><text x="218" y="26">Z</text></g>
 </svg>`;
 
   const NS = 'http://www.w3.org/2000/svg';
@@ -171,14 +168,18 @@
   function sparkle(svg) {
     const g = svg.querySelector('.cp-stars');
     let html = '';
-    for (let i = 0; i < 170; i++) {
-      const x = (Math.random() * 212).toFixed(1), y = (Math.random() * 180).toFixed(1);
-      const delay = `animation-delay:-${(Math.random() * 2).toFixed(2)}s`;
+    for (let i = 0; i < 320; i++) {
+      const x = (Math.random() * 226).toFixed(1), y = (Math.random() * 182).toFixed(1);
       if (i % 8 === 0) {
-        const r = 1.8 + Math.random() * 1.6, q = r * 0.26;
-        html += `<path class="cp-star cp-star-big" style="${delay}" transform="translate(${x} ${y})" d="M0 ${-r} L${q} ${-q} L${r} 0 L${q} ${q} L0 ${r} L${-q} ${q} L${-r} 0 L${-q} ${-q} Z"/>`;
+        const delay = `animation-delay:-${(Math.random() * 2).toFixed(2)}s`;
+        if (i % 24 === 0) {
+          const r = 1.6 + Math.random() * 1.6, q = r * 0.26;
+          html += `<path class="cp-star cp-star-big" style="${delay}" transform="translate(${x} ${y})" d="M0 ${-r} L${q} ${-q} L${r} 0 L${q} ${q} L0 ${r} L${-q} ${q} L${-r} 0 L${-q} ${-q} Z"/>`;
+        } else {
+          html += `<circle class="cp-star" style="${delay}" cx="${x}" cy="${y}" r="${(0.6 + Math.random() * 0.7).toFixed(2)}"/>`;
+        }
       } else {
-        html += `<circle class="cp-star" style="${delay}" cx="${x}" cy="${y}" r="${(0.5 + Math.random() * 0.9).toFixed(2)}"/>`;
+        html += `<circle class="cp-speck" cx="${x}" cy="${y}" r="${(0.3 + Math.random() * 0.5).toFixed(2)}"/>`;
       }
     }
     g.innerHTML = html;
@@ -264,8 +265,8 @@
     function lookAt(x, y) {
       const r = art.getBoundingClientRect();
       const cr = container.getBoundingClientRect();
-      const ex = (r.left - cr.left) + r.width * 0.63;
-      const ey = (r.top - cr.top) + r.height * 0.37;
+      const ex = (r.left - cr.left) + r.width * 0.613;
+      const ey = (r.top - cr.top) + r.height * 0.35;
       const dx = x - ex, dy = y - ey;
       const d = Math.hypot(dx, dy) || 1;
       const k = Math.min(1, d / 220);

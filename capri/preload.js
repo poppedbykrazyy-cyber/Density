@@ -11,6 +11,7 @@ const on = (ch) => (cb) => ipcRenderer.on(ch, (_e, data) => cb(data));
 contextBridge.exposeInMainWorld('capriDesktop', {
   perch: () => ipcRenderer.send('perch'),
   unperch: () => ipcRenderer.send('unperch'),
+  seat: (x) => ipcRenderer.send('seat', Number(x)),
   minimize: () => ipcRenderer.send('minimize'),
   quit: () => ipcRenderer.send('quit'),
   setIgnore: (v) => ipcRenderer.send('set-ignore', !!v),
