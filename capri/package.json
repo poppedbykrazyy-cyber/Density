@@ -1,0 +1,14 @@
+{
+  "name": "capri",
+  "version": "2.0.0",
+  "description": "Capri — a Cyberpunk: Edgerunners-style AI companion that sits on your windows.",
+  "main": "main.js",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "preview": "npx --yes http-server renderer -p 5173 -c-1"
+  },
+  "devDependencies": {
+    "electron": "^33.2.0"
+  }
+}

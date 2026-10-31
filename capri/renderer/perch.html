@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" class="electron">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:">
+  <title>Capri</title>
+  <link rel="stylesheet" href="avatar.css">
+  <style>
+    html, body { margin: 0; height: 100%; background: transparent; overflow: hidden; }
+    /* 380x240 window; Capri at x=140 so her speech bubble fits to her left */
+    #capri { left: 140px; top: 0; }
+    #capri.dragging { cursor: grabbing; }
+      </style>
+</head>
+<body>
+  <div id="capri" title="Drag me onto a window edge · click to open chat · right-click for menu"></div>
+  <script src="avatar.js"></script>
+  <script src="perch.js"></script>
+</body>
+</html>

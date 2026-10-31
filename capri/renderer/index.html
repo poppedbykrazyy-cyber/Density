@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self' http://localhost:* http://127.0.0.1:*; img-src 'self' data: blob:; media-src 'self' data: blob:">
+  <title>CAPRI // netlink</title>
+  <link rel="stylesheet" href="avatar.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="stage">
+    <div id="capri"></div>
+
+    <main class="panel">
+      <div class="panel-inner">
+        <header class="titlebar">
+          <div class="brand">
+            <span class="glitch" data-text="CAPRI">CAPRI</span>
+            <span class="ver">// v2.0</span>
+          </div>
+          <div class="win-btns">
+            <button id="btn-perch" title="Let Capri sit on your screen (Ctrl+Shift+Space)">⇱</button>
+            <button id="btn-settings" title="Settings">⚙</button>
+            <button id="btn-min" title="Minimize">_</button>
+            <button id="btn-close" class="danger" title="Close">✕</button>
+          </div>
+        </header>
+
+        <div class="hud">
+          <span><i class="dot" id="link-dot"></i><b id="link-status">LINK: SCANNING</b></span>
+          <span id="hud-model">MODEL: --</span>
+          <span id="hud-clock">NC 00:00</span>
+        </div>
+        <div class="hud-bar"><div class="hud-bar-fill" id="sync-bar"></div></div>
+
+        <section class="log" id="log" aria-live="polite"></section>
+
+        <form class="composer" id="composer">
+          <span class="prompt">&gt;</span>
+          <textarea id="input" rows="1" placeholder="talk to capri..." autocomplete="off"></textarea>
+          <button type="submit" id="send" class="send">SEND</button>
+        </form>
+
+        <footer class="statusline">
+          <span>ICE: <b class="ok">GREEN</b></span>
+          <span>RAM <b id="ram">12/12</b></span>
+          <span class="blink-cursor">/help for commands</span>
+        </footer>
+
+        <aside class="settings" id="settings" hidden>
+          <h3>// CONFIG</h3>
+          <label>Ollama endpoint<input id="cfg-url" value="http://127.0.0.1:11434"></label>
+          <label>Model<input id="cfg-model" placeholder="auto-detect"></label>
+          <label>Your handle<input id="cfg-name" placeholder="choom"></label>
+          <label class="row"><input type="checkbox" id="cfg-offline"> Offline mode (no LLM, built-in replies)</label>
+          <div class="skin-row">
+            <span>Skin</span>
+            <label class="file-btn">LOAD GIF / PNG / WEBM<input type="file" id="cfg-skin" accept="image/gif,image/png,image/webp,image/apng,video/webm,video/mp4" hidden></label>
+            <button type="button" id="cfg-skin-reset">DEFAULT</button>
+          </div>
+          <div class="settings-btns">
+            <button id="cfg-test" type="button">TEST LINK</button>
+            <button id="cfg-save" type="button" class="primary">SAVE</button>
+          </div>
+          <p class="hint">Capri runs on a local model through <b>Ollama</b> — free, private, works offline.
+            Install it from ollama.com, then run <code>ollama pull llama3.2</code>.<br>
+            <b>Skin:</b> drop in your own Capri clip (ideally a transparent GIF/WebM cut-out) to replace the drawn version.</p>
+        </aside>
+      </div>
+    </main>
+  </div>
+
+  <script src="avatar.js"></script>
+  <script src="brain.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
