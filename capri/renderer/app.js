@@ -174,25 +174,62 @@
   function autosize() { input.style.height = 'auto'; input.style.height = Math.min(110, input.scrollHeight) + 'px'; }
   input.addEventListener('input', autosize);
 
-  $('btn-settings').onclick = () => { fillSettings(); fillVoice(); $('settings').hidden = !$('settings').hidden; };
+  $('btn-settings').onclick = () => { fillSettings(); fillVoice(); fillSkin(); $('settings').hidden = !$('settings').hidden; };
   $('cfg-save').onclick = () => { readSettings(); saveCfg(); $('settings').hidden = true; checkLink(true); };
   $('cfg-test').onclick = () => { readSettings(); checkLink(true); };
-  // custom skin: your own Capri GIF / PNG / WebM replaces the drawn avatar (shared with the perch window)
-  $('cfg-skin').onchange = (e) => {
-    const file = e.target.files[0];
-    e.target.value = '';
-    if (!file) return;
-    if (file.size > 4.5 * 1024 * 1024) return addMsg('sys', 'Skin too big (max ~4.5 MB). Try a shorter or smaller clip.', 'err');
-    const reader = new FileReader();
-    reader.onload = () => {
-      try { localStorage.setItem('capri.skin', reader.result); }
-      catch { return addMsg('sys', "Couldn't store that skin — it's too big for local storage.", 'err'); }
-      capri.reloadSkin();
-      addMsg('sys', 'Skin loaded: ' + file.name);
+  // ---------------- custom skin (exact look; see skin.js) ----------------
+  let skin = null;
+  let skinQueue = Promise.resolve();
+  function skinStatus() {
+    $('sk-status').textContent = skin.idle
+      ? `Idle: ${skin.idle.name}${skin.talk ? ' · Talk: ' + skin.talk.name : ' · no talk clip (idle plays while she speaks)'}`
+      : 'Using the drawn Capri. Load a clip of her for an exact look.';
+  }
+  async function fillSkin() {
+    await skinQueue;
+    skin = Object.assign(CapriSkin.defaults(), await CapriSkin.get());
+    skinStatus();
+    $('sk-cols').value = skin.sheet.cols; $('sk-rows').value = skin.sheet.rows; $('sk-fps').value = skin.sheet.fps;
+    $('sk-key').value = skin.key.mode; $('sk-color').value = skin.key.color;
+    $('sk-tol').value = skin.key.tol; $('sk-tol-val').textContent = skin.key.tol;
+    $('sk-scale').value = skin.scale; $('sk-scale-val').textContent = Math.round(skin.scale * 100) + '%';
+  }
+  // saves run one at a time, each with a snapshot of the settings at that moment
+  function saveSkin() {
+    const snapshot = skin.idle ? { ...skin, sheet: { ...skin.sheet }, key: { ...skin.key } } : null;
+    skinQueue = skinQueue.then(async () => {
+      await CapriSkin.put(snapshot);
+      await capri.reloadSkin();
+    }).catch((e) => addMsg('sys', 'Skin error: ' + e.message, 'err'));
+    skinStatus();
+    return skinQueue;
+  }
+  for (const which of ['idle', 'talk']) {
+    $('sk-' + which).onchange = async (e) => {
+      const file = e.target.files[0];
+      e.target.value = '';
+      if (!file) return;
+      if (file.size > 60 * 1024 * 1024) return addMsg('sys', 'That clip is over 60 MB — trim it first.', 'err');
+      if (!skin) await fillSkin();
+      skin[which] = { blob: file, type: file.type || 'image/png', name: file.name };
+      if (which === 'talk' && !skin.idle) skin.idle = skin.talk;
+      await saveSkin();
+      addMsg('sys', `${which === 'idle' ? 'Idle' : 'Talk'} clip loaded: ${file.name}`);
     };
-    reader.readAsDataURL(file);
-  };
-  $('cfg-skin-reset').onclick = () => { localStorage.removeItem('capri.skin'); capri.reloadSkin(); addMsg('sys', 'Back to the drawn Capri.'); };
+  }
+  $('sk-reset').onclick = async () => { skin = CapriSkin.defaults(); await saveSkin(); await fillSkin(); addMsg('sys', 'Back to the drawn Capri.'); };
+  for (const id of ['sk-cols', 'sk-rows', 'sk-fps', 'sk-key', 'sk-color', 'sk-tol', 'sk-scale']) {
+    $(id).addEventListener('change', () => {
+      if (!skin) return;
+      skin.sheet = { cols: +$('sk-cols').value || 1, rows: +$('sk-rows').value || 1, fps: +$('sk-fps').value || 12 };
+      skin.key = { ...skin.key, mode: $('sk-key').value, color: $('sk-color').value, tol: +$('sk-tol').value };
+      skin.scale = +$('sk-scale').value;
+      saveSkin();
+    });
+  }
+  $('sk-tol').addEventListener('input', () => { $('sk-tol-val').textContent = $('sk-tol').value; });
+  $('sk-scale').addEventListener('input', () => { $('sk-scale-val').textContent = Math.round($('sk-scale').value * 100) + '%'; });
+
   // ---------------- voice settings ----------------
   function fillVoice() {
     const v = CapriVoice.cfg;

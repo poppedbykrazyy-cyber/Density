@@ -12,8 +12,8 @@
  *  - random idle actions (glitch, tilt, lean, shiver, glance, hair toss, kick) via .act-* classes
  *  - eyes + head track the cursor
  *
- * A custom skin (your own GIF / PNG / WebM, stored in localStorage "capri.skin")
- * replaces the drawing if set.
+ * A custom skin (your own GIF / APNG / sprite sheet / WebM — see skin.js) replaces
+ * the drawing if one is saved.
  */
 (function () {
   const SVG = `
@@ -187,23 +187,12 @@
   }
 
   function buildArt(container) {
-    const skin = localStorage.getItem('capri.skin');
-    container.classList.toggle('skinned', !!skin);
-    if (!skin) {
-      container.insertAdjacentHTML('afterbegin', SVG);
-      const svg = container.querySelector('svg');
-      sparkle(svg);
-      boil(svg);
-      return svg;
-    }
-    const media = document.createElement(skin.startsWith('data:video') ? 'video' : 'img');
-    media.className = 'capri-skin capri-art';
-    media.src = skin;
-    if (media.tagName === 'VIDEO') Object.assign(media, { autoplay: true, loop: true, muted: true, playsInline: true });
-    else media.alt = 'Capri';
-    media.draggable = false;
-    container.prepend(media);
-    return media;
+    container.classList.remove('skinned');
+    container.insertAdjacentHTML('afterbegin', SVG);
+    const svg = container.querySelector('svg');
+    sparkle(svg);
+    boil(svg);
+    return svg;
   }
 
   function mountCapri(container) {
@@ -228,6 +217,7 @@
       container.classList.remove('idle', 'think', 'talk', 'sleep', 'happy');
       container.classList.add(m);
       if (art.pauseAnimations) { if (m === 'sleep') art.pauseAnimations(); else art.unpauseAnimations(); }
+      if (skinRenderer) skinRenderer.setClip(m === 'talk' ? 'talk' : 'idle');
       if (m === 'happy') play('burst');
       if (mood === 'sleep') play('glitch'); // jolts awake
       mood = m;
@@ -284,16 +274,53 @@
       bubbleTimer = setTimeout(() => { bubble.hidden = true; }, ms || Math.min(9000, 2500 + text.length * 45));
     }
 
-    // swap between the drawing and a custom skin
-    function reloadSkin() {
+    // Custom skin (see skin.js): if one is saved, a canvas playing the clip replaces the drawing.
+    let skinRenderer = null, skinToken = 0;
+    async function reloadSkin() {
+      const token = ++skinToken;
+      const skin = window.CapriSkin ? await CapriSkin.get() : null;
+      if (token !== skinToken) return;
+      if (!(skin && skin.idle) && !skinRenderer && art.tagName === 'svg') return; // already the drawing
+      if (skinRenderer) { skinRenderer.stop(); skinRenderer = null; }
       art.remove();
-      art = buildArt(container);
+      if (skin && skin.idle) {
+        const canvas = document.createElement('canvas');
+        canvas.width = canvas.height = 240;
+        canvas.className = 'capri-skin capri-art';
+        container.prepend(canvas);
+        container.classList.add('skinned');
+        art = canvas;
+        try {
+          skinRenderer = await CapriSkin.createRenderer(canvas, skin);
+          skinRenderer.setClip(mood === 'talk' ? 'talk' : 'idle');
+        } catch (e) {
+          console.error('skin failed', e);
+          canvas.remove();
+          art = buildArt(container);
+        }
+      } else {
+        art = buildArt(container);
+      }
       pupils = art.querySelector('.cp-pupils');
       head = art.querySelector('.cp-head');
       play('materialize');
     }
     // other windows (the perch) pick up skin changes live
-    window.addEventListener('storage', (e) => { if (e.key === 'capri.skin') reloadSkin(); });
+    window.addEventListener('storage', (e) => { if (e.key === 'capri.skin.rev') reloadSkin(); });
+    // carry over a skin saved by the older single-image version
+    const legacy = localStorage.getItem('capri.skin');
+    if (legacy && window.CapriSkin) {
+      (async () => {
+        const [head, b64] = legacy.split(',');
+        const type = (head.match(/data:([^;]+)/) || [])[1] || 'image/png';
+        const bytes = Uint8Array.from(atob(b64), (c) => c.charCodeAt(0));
+        await CapriSkin.put({ ...CapriSkin.defaults(), idle: { blob: new Blob([bytes], { type }), type, name: 'skin' } });
+        localStorage.removeItem('capri.skin');
+        reloadSkin();
+      })().catch(() => localStorage.removeItem('capri.skin'));
+    } else if (window.CapriSkin) {
+      reloadSkin();
+    }
 
     play('materialize');
     armSleep();

@@ -120,11 +120,11 @@
 .capri.dragging .cp-leg-under { animation-delay: .11s; }
 .capri.dragging .cp-strand { animation-duration: .4s; }
 
-/* custom skin: same moods, applied to the whole image */
-.capri.skinned .capri-skin { object-fit: contain; object-position: 50% 100%; height: 180px; inset: auto 0 60px 0; transform-origin: 50% 100%; transition: transform .25s; }
+/* custom skin: a 240x240 canvas playing your clip; same moods, applied to the whole image */
+.capri.skinned .capri-skin { pointer-events: auto; filter: none; transform-origin: 50% 80%; transition: transform .25s; }
 .capri.skinned.talk .capri-skin { animation: cp-bob .32s steps(2) infinite; }
 .capri.skinned.happy .capri-skin { animation: cp-hop .3s steps(3) 2; }
-.capri.skinned.sleep .capri-skin { filter: brightness(.6) saturate(.6); }
+.capri.skinned.sleep .capri-skin { animation: none; filter: brightness(.6) saturate(.6); }
 .capri.skinned.act-tilt .capri-skin { animation: cp-tilt 1.6s cubic-bezier(.3, 1.6, .5, 1); }
 .capri.skinned.act-peek .capri-skin { animation: cp-lean 1.4s cubic-bezier(.4, 1.5, .5, 1); }
 .capri.skinned.act-shiver .capri-skin { animation: cp-shiver .7s steps(10); }

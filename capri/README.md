@@ -68,10 +68,19 @@ This is a voice styled after her, not a clone of the actress's real voice.
 
 ### Custom skin (exact 1:1 look)
 
-The built-in Capri is a hand-drawn SVG. For a frame-exact look, open ⚙ → **Skin** and load your
-own clip of her, up to about 4.5 MB. A cut-out GIF or WebM with transparency looks best. The skin
-is shared with the perch window and keeps the mood animations. **DEFAULT** switches back to the
-drawing.
+The built-in Capri is a hand-drawn SVG. Her head is traced from an anime frame, but it is still a
+drawing. For a frame-exact Capri, load your own clip of her in ⚙ → **Skin**:
+
+- **IDLE CLIP**: always playing. It can be an animated GIF, APNG or WebP, a WebM or MP4 video, or a PNG sprite sheet.
+- **TALK CLIP** (optional): plays while she speaks, then she goes back to idle.
+- **Sheet cols / rows / FPS**: for sprite sheets, the image is split into a grid of frames and played at that speed.
+- **Background**: *remove, auto-detect* keys out the colour in the clip's corners. *Remove, this colour* keys out a colour you pick. Use it for green-screen or solid-backdrop clips. **Tolerance** sets how much gets removed.
+- **Size**: scales her up or down on the window edge.
+
+Clips are stored in IndexedDB, so large files are fine (up to 60 MB), and the perch window
+updates live. **DEFAULT** switches back to the drawing. In skin mode, the drawn-only touches
+(cursor-following eyes, line boil, sparkle) are off. She still bobs while talking, hops, tilts and
+dims when asleep.
 
 ## Files
 
@@ -85,6 +94,7 @@ capri/
     ├── avatar.css   her colours and every animation
     ├── index.html   chat window   (+ style.css, app.js)
     ├── voice.js     text-to-speech voice + data chirps
+    ├── skin.js      custom skins: GIF/video/sprite-sheet playback + background removal
     ├── perch.html   perched-only window (+ perch.js)
     └── brain.js     persona prompt, Ollama streaming, offline replies
 ```

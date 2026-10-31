@@ -67,11 +67,32 @@
               <button id="vc-preset" type="button">CAPRI PRESET</button>
             </div>
           </fieldset>
-          <div class="skin-row">
-            <span>Skin</span>
-            <label class="file-btn">LOAD GIF / PNG / WEBM<input type="file" id="cfg-skin" accept="image/gif,image/png,image/webp,image/apng,video/webm,video/mp4" hidden></label>
-            <button type="button" id="cfg-skin-reset">DEFAULT</button>
-          </div>
+          <fieldset class="voice-box skin-box" id="skin-box">
+            <legend>// SKIN — EXACT LOOK</legend>
+            <div class="skin-row">
+              <label class="file-btn">IDLE CLIP<input type="file" id="sk-idle" accept="image/gif,image/png,image/webp,image/apng,video/webm,video/mp4" hidden></label>
+              <label class="file-btn">TALK CLIP<input type="file" id="sk-talk" accept="image/gif,image/png,image/webp,image/apng,video/webm,video/mp4" hidden></label>
+              <button type="button" id="sk-reset">DEFAULT</button>
+            </div>
+            <p class="hint" id="sk-status">Using the drawn Capri.</p>
+            <div class="sliders">
+              <label>Sheet cols<input id="sk-cols" type="number" min="1" max="32" value="1"></label>
+              <label>Rows<input id="sk-rows" type="number" min="1" max="32" value="1"></label>
+              <label>FPS<input id="sk-fps" type="number" min="1" max="60" value="12"></label>
+            </div>
+            <label>Background
+              <select id="sk-key">
+                <option value="off">keep (clip is already a cut-out)</option>
+                <option value="auto">remove — auto-detect from corners</option>
+                <option value="color">remove — this colour:</option>
+              </select>
+            </label>
+            <div class="sliders">
+              <label>Colour<input id="sk-color" type="color" value="#00ff00"></label>
+              <label>Tolerance <b id="sk-tol-val"></b><input id="sk-tol" type="range" min="5" max="200" step="1"></label>
+              <label>Size <b id="sk-scale-val"></b><input id="sk-scale" type="range" min="0.5" max="1.25" step="0.05"></label>
+            </div>
+          </fieldset>
           <div class="settings-btns">
             <button id="cfg-test" type="button">TEST LINK</button>
             <button id="cfg-save" type="button" class="primary">SAVE</button>
@@ -84,6 +105,7 @@
     </main>
   </div>
 
+  <script src="skin.js"></script>
   <script src="avatar.js"></script>
   <script src="brain.js"></script>
   <script src="voice.js"></script>
